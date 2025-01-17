@@ -1,0 +1,34 @@
+{
+  "name": "practica04_230040",
+  "version": "1.0.0",
+  "description": "Realizar un ejemplo de aplicacion web basada en el TechStack de Node.js, Express que permita controlar las sesiones y registre datos en las variables de ejecucion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danny88e/Practica04_230040.git"
+  },
+  "keywords": [
+    "UUID",
+    "HTTP",
+    "Industria",
+    "4.0"
+  ],
+  "author": "Luis Daniel Suarez Escamilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danny88e/Practica04_230040/issues"
+  },
+  "homepage": "https://github.com/Danny88e/Practica04_230040#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "macaddress": "^0.5.3",
+    "moment-timezone": "^0.5.46",
+    "uuid": "^11.0.5"
+  }
+}
