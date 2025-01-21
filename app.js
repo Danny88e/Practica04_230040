@@ -6,6 +6,8 @@ import moment from 'moment-timezone';
 import os from 'os';
 
 const app = express();
+const sessions = {};
+
 //middleware 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
@@ -98,6 +100,10 @@ app.put("/update",(req,res)=>{
         session:session[sessionID]
     })
  })
+
+app.get('/',(req,res)=>{
+    return res.status(200).json({message:"Bienvenido a la api de control de sesiones", author:"Luis Daniel Suarez Escamilla"})
+})
 
 const PORT = 3000;
 app.listen(PORT,()=>{
