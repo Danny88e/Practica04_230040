@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node app.js"
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "express-session": "^1.18.1",
     "macaddress": "^0.5.3",
     "moment-timezone": "^0.5.46",
+    "mongoose": "^8.9.5",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ import session from 'express-session'
 import moment from 'moment-timezone'
 import os from 'os'
 import cors from 'cors'
+import './database.js'
 
 const app = express();
 app.use(express.urlencoded({extended:true}))
@@ -106,62 +107,66 @@ app.post("/login",(req,res)=>{
         message:"Se ha logeado de manera exitosa",
         sessionId,
     })
-
-    //Logout endpoint
-    app.post("/logout",(req,res)=>{
-        const {sessionId} = req.body;
-        if (!sessionId || !sessions[sessionId]){
-            return res.status(404).json({
-                message:"No se ha encontrado una sesión activa."
-            })
-        }
-        delete sessions[sessionId]
-        req.session.destroy((err)=>{
-            if (err){
-                return res.status(500).send('Error al cerrar la sesión');
-            }
-        })
-        res.status(200).json({message:"Logout succesful"})
-    })
-
-    //Actualización de la Sesión
-    app.put("/update",(req,res)=>{
-        const {sessionId,email,nickname} = req.body;
-        if (!sessionId || !sessions[sessionId]){
-            return res.status(404).json({message:"No existe una sesión activa"});
-        }
-        if (email) sessions[sessionId].email = email
-        if(nickname) sessions[sessionId].nickname = nickname;
-        sessions[sessionId].lastAccess = new Date()
-        res.status(200).json({
-            message:"La sesión ha sido actualizada",
-            session: session[sessionId]
-        })
-    })
-
-    //Estatus
-    app.get("/status",(req,res)=>{
-        const sessionId = req.query.sessionID;
-        console.log(req.query.sessionID)
-        if(!sessionId || !sessions[sessionId]){
-            res.status(404).json({message:"No hay sesión activa"})
-        }
-        res.status(200).json({
-            message:"Sesion Activa",
-            session:sessions[sessionId]
-        })
-    })
-    // Endpoint para obtener la lista de sesiones activas
-    app.get("/sessions", (req, res) => {
-        if (Object.keys(sessions).length === 0) {
-            return res.status(404).json({ message: "No hay sesiones activas" });
-        }
-
-        const activeSessions = Object.values(sessions); // Convierte el objeto de sesiones en un array
-        res.status(200).json({
-            message: "Lista de sesiones activas",
-            sessions: activeSessions,
-        });
-    });
-
 })
+//Logout endpoint
+app.post("/logout",(req,res)=>{
+    const {sessionId} = req.body;
+    if (!sessionId || !sessions[sessionId]){
+        return res.status(404).json({
+            message:"No se ha encontrado una sesión activa."
+        })
+    }
+    delete sessions[sessionId]
+    req.session.destroy((err)=>{
+        if (err){
+            return res.status(500).send('Error al cerrar la sesión');
+        }
+    })
+    res.status(200).json({message:"Logout succesful"})
+})
+
+//Actualización de la Sesión
+app.put("/update",(req,res)=>{
+    const {sessionId,email,nickname} = req.body;
+    if (!sessionId || !sessions[sessionId]){
+        return res.status(404).json({message:"No existe una sesión activa"});
+    }
+    if (email) sessions[sessionId].email = email
+    if(nickname) sessions[sessionId].nickname = nickname;
+    sessions[sessionId].lastAccess = new Date()
+    res.status(200).json({
+        message:"La sesión ha sido actualizada",
+        session: session[sessionId]
+    })
+})
+
+//Estatus
+app.get("/status",(req,res)=>{
+    const sessionId = req.query.sessionID;
+    console.log(req.query.sessionID)
+    if(!sessionId || !sessions[sessionId]){
+        res.status(404).json({message:"No hay sesión activa"})
+    }
+    res.status(200).json({
+        message:"Sesion Activa",
+        session:sessions[sessionId]
+    })
+})
+// Endpoint para obtener la lista de sesiones activas
+app.get("/sessions", (req, res) => {
+    if (Object.keys(sessions).length === 0) {
+        return res.status(404).json({ message: "No hay sesiones activas" });
+    }
+
+    const activeSessions = Object.values(sessions); // Convierte el objeto de sesiones en un array
+    res.status(200).json({
+        message: "Lista de sesiones activas",
+        sessions: activeSessions,
+    });
+});
+//welcome
+app.get('/welcome', (req, res) => {
+    return res.status(200).json({
+        message: "Saludos desde API de Dani"
+    });
+});
