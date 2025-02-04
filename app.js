@@ -28,14 +28,29 @@ app.use(session({
 // Sesiones almacenadas en Memoria (RAM)
 const sessions = {}
 //Funcion que permite acceder a la información de la interfaz de red en este caso LAN
-const getClientIp = (req) =>{
+
+/*const getClientIp = (req) =>{
     return(
         req.header["x-forwarded-for"] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         req.connection.socket?.remoteAddress
     )
+}*/
+
+const getClientIp = (req) => {
+    const ip = req.headers["x-fowarded-for"]?.split(",")[0]?.trim() ||
+               req.connection?.remoteAddress ||
+               req.socket?.remoteAddress ||
+               req.connection?.socket?.remoteAddress ||
+               "IP no disponible";
+
+    if(ip.startsWith("::ffff:")) {
+        return ip.slice(7);
+    }
+    return ip;
 }
+
 const getLocalIp = () => {
     const networkInterfaces = os.networkInterfaces();
     for (const interfaceName in networkInterfaces) {
@@ -97,8 +112,9 @@ app.post("/login",(req,res)=>{
         email,
         nickname,
         macAddress,
-        //serverMac,
-        ip: getServerNetworkInfo(),
+        serverMac,
+        ipServer: getServerNetworkInfo(),
+        ipUser: getClientIp(req),
         createdAt:now,
         lastAccess:now
     }
